@@ -1,5 +1,5 @@
 ---
-title: "The Object Oriented Conundrum"
+title: "The Object-Oriented Conundrum"
 label: "Chapter One"
 published: true
 ---

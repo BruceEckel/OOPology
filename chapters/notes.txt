@@ -1,0 +1,2 @@
+- Encapsulation as semi-immutability
+    a claim about how to manage the growth of complexity. When a system is built from objects that hide their internals, changes can be made locally.
