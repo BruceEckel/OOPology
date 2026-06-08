@@ -132,7 +132,7 @@ def build_index(chapters: list[Path]) -> None:
     <ul class="toc-list">
 {toc_items}
     </ul>
-    <p class="copyright">© 2025 {BOOK_AUTHOR}. All Rights Reserved.<br>
+    <p class="copyright">© 2026 {BOOK_AUTHOR}. All Rights Reserved.<br>
     Freely readable online. No reproduction without permission.</p>
   </div>
 </body>
