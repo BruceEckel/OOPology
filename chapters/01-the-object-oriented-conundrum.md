@@ -8,8 +8,8 @@ C++ was my first really interesting high-level language.
 My first useful language was BASIC, my first "serious job" was assembly language and C.
 I learned Pascal on my own.
 In C++, though, you could make your own types with constructors and destructors and operator overloading.
-I still remember what it felt like when I first heard Bjarne Stroustrup say the phrase "user defined data types."
-It sounded like possibility.
+I still remember hearing Bjarne Stroustrup say the phrase "user defined data types."
+It felt like possibility.
 
 But of course there was more.
 There was inheritance.
