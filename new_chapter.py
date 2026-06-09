@@ -7,10 +7,27 @@ from pathlib import Path
 
 CHAPTERS_DIR = Path(__file__).parent / "chapters"
 
+_ONES = [
+    "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+    "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen",
+    "Seventeen", "Eighteen", "Nineteen",
+]
+_TENS = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+
+
+def num_to_word(n: int) -> str:
+    if n < 20:
+        return _ONES[n]
+    if n < 100:
+        tens, ones = divmod(n, 10)
+        return _TENS[tens] + (f"-{_ONES[ones]}" if ones else "")
+    return str(n)
+
+
 TEMPLATE = """\
 ---
 title: "{title}"
-label: "Chapter {num:02d}"
+label: "Chapter {num_word}"
 published: false
 ---
 
@@ -37,7 +54,7 @@ def slugify(title: str) -> str:
 def all_chapters() -> list[Path]:
     return sorted(
         (p for p in CHAPTERS_DIR.glob("*.md") if parse_num(p) is not None),
-        key=parse_num,
+        key=lambda p: parse_num(p) or 0,
     )
 
 
@@ -49,7 +66,7 @@ def renumber(path: Path, new_num: int) -> Path:
     return new_path
 
 
-def main() -> None:
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create a new chapter")
     parser.add_argument("number", type=int, help="Chapter number (e.g. 3)")
     parser.add_argument("title", help="Chapter title")
@@ -61,17 +78,13 @@ def main() -> None:
     CHAPTERS_DIR.mkdir(exist_ok=True)
 
     # Collect chapters that need to shift up (num >= target, in reverse order)
-    to_shift = [ch for ch in reversed(all_chapters()) if parse_num(ch) >= num]
+    to_shift = [ch for ch in reversed(all_chapters()) if (parse_num(ch) or 0) >= num]
     if to_shift:
         print("Renumbering:")
         for ch in to_shift:
-            renumber(ch, parse_num(ch) + 1)  # type: ignore[arg-type]
+            renumber(ch, (parse_num(ch) or 0) + 1)
 
     slug = slugify(title)
     new_path = CHAPTERS_DIR / f"{num:02d}-{slug}.md"
-    new_path.write_text(TEMPLATE.format(title=title, num=num), encoding="utf-8")
+    new_path.write_text(TEMPLATE.format(title=title, num_word=num_to_word(num)), encoding="utf-8")
     print(f"Created: {new_path.name}")
-
-
-if __name__ == "__main__":
-    main()
