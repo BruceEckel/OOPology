@@ -17,6 +17,9 @@ TEMPLATE = REPO_ROOT / "template.html"
 BOOK_TITLE = "OOPology"
 BOOK_AUTHOR = "Bruce Eckel"
 
+HEADING_FONT = "Lexend Deca"
+HEADING_FONT_GOOGLE = "Lexend+Deca:wght@400;600;700"
+
 
 def parse_frontmatter(md_path: Path) -> tuple[dict, str]:
     """Extract YAML-ish frontmatter and body from a Markdown file."""
@@ -70,6 +73,8 @@ def build_chapter(
     vars: list[str] = [
         f"--variable=title:{title}",
         f"--variable=chapter-label:{label}",
+        f"--variable=heading-font:{HEADING_FONT}",
+        f"--variable=heading-font-google:{HEADING_FONT_GOOGLE}",
     ]
 
     if prev_chapter:
@@ -94,7 +99,7 @@ def build_chapter(
         "--template", str(TEMPLATE),
         "--output", str(out),
         "--from", "markdown+smart",
-        "--highlight-style", "tango",
+        "--syntax-highlighting", "tango",
         *vars,
     ]
     subprocess.run(cmd, check=True)
@@ -121,7 +126,7 @@ def build_index(chapters: list[Path]) -> None:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{BOOK_TITLE}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cormorant+SC:wght@400;600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family={HEADING_FONT_GOOGLE}&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cormorant+SC:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -144,34 +149,34 @@ def build_index(chapters: list[Path]) -> None:
 
 def build_css() -> None:
     """Write shared CSS to docs/ (index page uses it; chapters are self-contained)."""
-    css = """
-:root {
+    css = f"""
+:root {{
   --ink: #1a1612; --paper: #f5f0e8; --muted: #7a6e62;
   --accent: #8b1a1a; --rule: #c8bfb0; --max-width: 680px;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { font-size: 18px; }
-body { background: var(--paper); color: var(--ink);
-  font-family: 'EB Garamond', Georgia, serif; line-height: 1.75;
-  padding: 0 1.5rem; }
-.page { max-width: var(--max-width); margin: 0 auto; padding: 4rem 0 6rem; }
-.book-title { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem;
-  font-weight: 600; line-height: 1.1; margin-bottom: 0.5rem; }
-.book-author { font-family: 'Cormorant SC', serif; font-size: 0.85rem;
-  letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.5rem; }
-.title-rule { width: 3rem; height: 1px; background: var(--accent);
-  margin: 1.5rem 0 2.5rem; }
-.toc-list { list-style: none; margin-top: 2rem; }
-.toc-list li { display: flex; align-items: baseline;
-  padding: 0.6rem 0; border-bottom: 1px solid var(--rule); }
-.toc-list li:first-child { border-top: 1px solid var(--rule); }
-.toc-num { font-family: 'Cormorant SC', serif; font-size: 0.7rem;
-  letter-spacing: 0.1em; color: var(--muted); min-width: 2.5rem; }
-.toc-list a { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem;
-  color: var(--ink); text-decoration: none; flex: 1; }
-.toc-list a:hover { color: var(--accent); }
-.copyright { margin-top: 5rem; font-size: 0.78rem; color: var(--muted);
-  font-family: 'Cormorant SC', serif; letter-spacing: 0.05em; }
+}}
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+html {{ font-size: 18px; }}
+body {{ background: var(--paper); color: var(--ink);
+  font-family: Georgia, serif; line-height: 1.75;
+  padding: 0 1.5rem; }}
+.page {{ max-width: var(--max-width); margin: 0 auto; padding: 4rem 0 6rem; }}
+.book-title {{ font-family: '{HEADING_FONT}', sans-serif; font-size: 3.5rem;
+  font-weight: 600; line-height: 1.1; margin-bottom: 0.5rem; }}
+.book-author {{ font-family: 'Cormorant SC', serif; font-size: 0.85rem;
+  letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.5rem; }}
+.title-rule {{ width: 3rem; height: 1px; background: var(--accent);
+  margin: 1.5rem 0 2.5rem; }}
+.toc-list {{ list-style: none; margin-top: 2rem; }}
+.toc-list li {{ display: flex; align-items: baseline;
+  padding: 0.6rem 0; border-bottom: 1px solid var(--rule); }}
+.toc-list li:first-child {{ border-top: 1px solid var(--rule); }}
+.toc-num {{ font-family: 'Cormorant SC', serif; font-size: 0.7rem;
+  letter-spacing: 0.1em; color: var(--muted); min-width: 2.5rem; }}
+.toc-list a {{ font-family: 'Cormorant Garamond', serif; font-size: 1.15rem;
+  color: var(--ink); text-decoration: none; flex: 1; }}
+.toc-list a:hover {{ color: var(--accent); }}
+.copyright {{ margin-top: 5rem; font-size: 0.78rem; color: var(--muted);
+  font-family: 'Cormorant SC', serif; letter-spacing: 0.05em; }}
 """
     (DOCS_DIR / "style.css").write_text(css.strip(), encoding="utf-8")
     print("  style.css")
