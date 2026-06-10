@@ -53,6 +53,6 @@ But eventually there was an executable `cfront` that would take C++ code and emi
 
 At this point I started creating example programs while going through the only book available,
 Stroustrup's *The C++ Programming Language* (October 14, 1985, Addison-Wesley).
-About the book Stroustrup said that he either write an introduction, an expert's guide or a language reference.
+About the book Stroustrup said that he could either write an introduction, an expert's guide or a language reference.
 He decided an expert's guide would best serve the target audience of early adopters.
 This was a good choice, but made it challenging for beginners like me.
