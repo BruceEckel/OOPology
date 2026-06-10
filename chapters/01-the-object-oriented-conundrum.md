@@ -38,20 +38,20 @@ The compiler writers would guess at what the particular language features meant,
 and would sometimes not implement features they didn't agree with.
 In order for `cfront` to be useful,
 it had to compile on all the target machines *and* generate code that compiled on all the target machines.
-To achieve this the `cfront` team had to understand the various C compilers.
-Sometimes this meant using a subset of C features, and sometimes it required a lot of `#IFDEF` preprocessing.
 
-It was a lot of work, and it made the `cfront` source code messy and challenging to follow.
+The `cfront` team had to adapt to the various C compilers.
+Sometimes this meant using a subset of C features, and sometimes it required a lot of `#IFDEF` preprocessing.
+This made the `cfront` source code messy and challenging to follow.
 But it was a brilliant way to adapt C++ to any machine that had a C compiler.
 
-We were using Sun workstations, high-end machines at that time.
+We were using Sun workstations, high-end machines in 1987.
 The tape was 10.5" in diameter and had to be loaded on a tape reader like the ones you see in old movies.
 All we were doing is copying the files to build `cfront` onto our Sun system.
 We ran `make cfront`.
 There might have been bugs which we had to sort out via email (The University of Washington was on the Arpanet).
 But eventually there was an executable `cfront` that would take C++ code and emit C code that implemented the C++ program.
 
-At this point I started creating example programs while going through the only book available,
+To learn C++ I started creating example programs while going through the only book available,
 Stroustrup's *The C++ Programming Language* (October 14, 1985, Addison-Wesley).
 About the book Stroustrup said that he could either write an introduction, an expert's guide or a language reference.
 He decided an expert's guide would best serve the target audience of early adopters.
