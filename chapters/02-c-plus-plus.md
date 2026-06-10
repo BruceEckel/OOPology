@@ -15,6 +15,8 @@ To get the code for the C++ compiler we had to ask Bell labs to mail us a magnet
 From the package, I think Stroustrup or Andy Koenig might have personally mailed it.
 The tape contained the C source code for `cfront` which compiled C++ code into C code.
 
+## "Portable Assembly"
+
 This was years before the C standard was published.
 C, and the very concept of portable programs, was still catching on.
 Before C, you would write programs in the assembly language for the target machine.
@@ -47,6 +49,8 @@ We ran `make cfront`.
 There might have been bugs which we had to sort out via email (The University of Washington was on the Arpanet).
 But eventually there was an executable `cfront` that would take C++ code and emit C code that implemented the C++ program.
 
+## Learning C++ in the Stone Age
+
 To learn C++ I started creating example programs while going through the only book available,
 Stroustrup's *The C++ Programming Language* (October 14, 1985, Addison-Wesley).
 Stroustrup said that he could either write an introduction,
@@ -58,26 +62,26 @@ The brilliance of C++ was that it adapted to its current environment:
 it was a superset of C, so it could compile any standard C program.
 Thus, a C programmer could start using C++ right away,
 and learn C++ features at their convenience.
-Modern programmers are more comfortable learning new languages,
-but back then many programmers had just begrudgingly made the change from assembly to C
+Modern programmers are comfortable learning new languages,
+but back then many programmers had only begrudgingly made the change from assembly to C
 and were quite resistant to learning a language that had higher-level concepts.
 C++ provided a more comfortable transition than some of the alternatives available at the time,
 and that is probably the biggest reason for its success.
 In addition, C++ could immediately access C libraries and projects,
 so that work could be utilized without rewriting it.
 
-Backwards compatibility with C had a significant impact on C++.
+C compatibility significantly impacted C++.
 A programmer familiar with other languages and encountering C++ for the first time
-often has a violent reaction to the complexity of some of the features.
+often has a violent reaction to the complexity of some features.
 These can seem needlessly complicated and even stupid to someone who isn't making the C-to-C++ transition.
-Backwards compatibility with C is no longer a particular benefit,
-but the complexity of the features that enable C compatibility is still impacting C++ programmers.
+Today, backwards compatibility with C is no longer a benefit.
+The complexity of the features that enable C compatibility still impacts C++ programmers.
 
-A particular impact comes from the fact that C has no automatic memory management.
+C has no automatic memory management, which puts a burden on the programmer.
 To dynamically allocate memory, the programmer must call the library function `malloc()`,
 and then remember to call `free()` when that memory is no longer needed.
-Sometimes a function would do this itself,
-and other times it might require the caller to perform memory management.
+Sometimes a function does this itself,
+and other times it requires the caller to perform memory management.
 Some functions could be effortlessly called,
 and others required the programmer to know that they were responsible for memory management.
 For assembly programmers who had written their own memory management code,
@@ -85,8 +89,9 @@ For assembly programmers who had written their own memory management code,
 For programmers who hadn't started in assembly, they were confusing.
 
 C++ offered improved memory management using constructors, destructors, `new` and `delete`.
-In C, if you wanted to create an object-like entity,
-you would allocate the storage, then call a function to initialize that storage:
+In C, if you want to create an object-like entity,
+you allocate the storage, then call a function to initialize that storage.
+When you're done with that storage, you must release it by calling `free()`:
 
 ```C
 // memory_management.c
@@ -94,14 +99,14 @@ you would allocate the storage, then call a function to initialize that storage:
 #include <stdlib.h>
 #include <string.h>
 
-struct Point {
+typedef struct point_t {
     double x;
     double y;
     char label[32];
-};
+} Point;
 
-struct Point* Point_new(double x, double y, const char* label) {
-    struct Point* p = malloc(sizeof(struct Point));
+Point* Point_new(double x, double y, const char* label) {
+    Point* p = malloc(sizeof(Point));
     if (!p) {
         fprintf(stderr, "malloc failed\n");
         return NULL;
@@ -109,35 +114,40 @@ struct Point* Point_new(double x, double y, const char* label) {
     p->x = x;
     p->y = y;
     strncpy(p->label, label, sizeof(p->label) - 1);
-    p->label[sizeof(p->label) - 1] = '\0';  // Ensure string termination
+    p->label[sizeof(p->label) - 1] = '\0';
     return p;
 }
 
-void Point_print(const struct Point* p) {
+void Point_print(const Point* p) {
     printf("Point '%s': (%.2f, %.2f)\n", p->label, p->x, p->y);
 }
 
 int main(void) {
-    struct Point* p = Point_new(3.14, 2.71, "origin-ish");
-    if (!p) return 1;  // Point_new might fail!
+    Point* p = Point_new(3.14, 2.71, "My Label");
+    if (!p) return 1;
     Point_print(p);
     // free(p);  // No consequences in main()
     return 0;
 }
 ```
 
-Just as in assembly, the programmer is responsible for every byte of memory.
+Note the definition of `Point`. In C, to refer to `struct Point` you had to spell it out every time.
+Just defining `struct Point` did not make something called `Point`.
+The `typedef` creates a `Point` that aliases to `struct Point` so we don't need all the extra `struct` keywords.
+
+In C, just as in assembly, the programmer is responsible for every byte of memory.
 You must know exactly how everything works, and if you forget (or you haven't learned yet),
 you'll forget to release memory and cause leaks.
 This example shows a particular pitfall:
 if you test using `main()` you won't find out whether you've forgotten to release memory,
 because `main()` will, in effect, clean everything up when the program terminates.
-Thus if you don't call `free(p)` in `main()`, there are no consequences.
+Thus, if you don't call `free(p)` in `main()`, there are no consequences.
+
 Because it seems to work, you later turn that `main()` into a function.
 Now every time you call that function it allocates a `Point` on the heap that it never releases.
 If you run that program long enough these leaks might fill up the heap, stopping the program with a heap overflow.
 But initially the program might not work,
-and it could be years later when some condition changes that the program starts crashing.
+and it could be years before some condition changes so the program starts crashing.
 The poor programmer that must fix this crash has no idea where to start looking.
 
 Here's another situation that shows the scaling limitations of C
@@ -150,6 +160,8 @@ As shown, the programmer must explicitly add a null terminator for the cases whe
 is longer that the destination storage.
 Because the source string may not be longer,
 it's possible that you (again) don't discover the problem until much later.
+
+## C++ as "A Better C"
 
 Translating the example into C++ shows numerous benefits:
 
@@ -173,9 +185,14 @@ struct Point {
 };
 
 int main() {
-    Point* p = new Point(3.14, 2.71, "origin-ish");
+    // Heap allocated - must manage lifetime manually
+    Point* p = new Point(3.14, 2.71, "Point p on heap");
     p->print();
     delete p;
+
+    // Stack allocated - destroyed automatically when main() exits
+    Point p2(2.71, 3.14, "Point p2 on stack");
+    p2.print();
 }
 ```
 
@@ -189,8 +206,20 @@ All the initialization happens in the constructor initializer list.
 The `new` keyword both allocates storage and calls the constructor for `Point`.
 You must still remember to call `delete` but it can call a destructor to perform cleanup before it releases the storage.
 
+Note that with stack-based objects you don't call `new` and `delete` because these objects have statically-determined lifetimes.
+The compiler allocates storage and calls `new` and `delete` for you.
+The ideal C++ program allocates all objects on the stack,
+and any heap-based objects are created and destroyed by the stack objects.
+This way, the application programmer doesn't worry about object lifetime.
+
+## Operator Overloading
+
 Memory managment was a significant issue with operator overloading.
 Operator overloading seemed like a straightforward function definition except that the function name was an operator (indeed, in languages with automatic memory management that's how it works).
+
+## The Puzzle of Dynamic Binding
+
+## The Benefits of C++
 
 In the end, C++ moved us *towards* high-level languages by wrapping the portable-assembly nature of C with some beneficial concepts.
 But C++ also had to be backwards compatible with C, so we could never fully escape the rawness of C.
@@ -203,3 +232,4 @@ It contains a certain tongue-in-cheek irony, suggesting that abstraction is the 
 Sometimes the abstraction doesn't work out: it hides something important or produces questionable benefits.
 One group at Sun Microsystems decided that C++ was too confusing and difficult.
 They decided a new level of abstraction was needed, one that would solve the problems they saw in C++.
+But before we can understand Java, we must first explore the (conflicting) origins of object-oriented programming.
