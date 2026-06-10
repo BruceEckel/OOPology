@@ -7,20 +7,19 @@ published: true
 C++ was my first really interesting high-level language.
 My first useful language was BASIC, my first "serious job" was assembly language and C.
 I learned Pascal on my own.
-In C++, though, you could make your own types with constructors and destructors and operator overloading.
+In C++, though, you could make your own types that had constructors and destructors and operator overloading.
 I still remember hearing Bjarne Stroustrup say "user defined data types."
 It felt like possibility.
 
 But of course there was more.
 There was inheritance.
 
-I was working as a research assistant at the University of Washington School of Oceanography.
+In 1987 I was working as a research assistant at the University of Washington School of Oceanography.
 Tom Keffer had a grant to make computing easier for scientists and engineers.
 The idea of overloading operators to do matrix manipulation seemed perfect.
 The constructors and destructors would allocate and clean up the matrices.
 Our target audience could focus on the equations and not the coding.
 
-We were using Sun workstations (this was 1987).
 To get the code for the C++ compiler we had to ask Bell labs to mail us a magnetic tape.
 From the package, I think Stroustrup or Andy Koenig might have personally mailed it.
 The tape contained the C source code for `cfront` which compiled C++ code into C code.
@@ -45,9 +44,10 @@ Sometimes this meant using a subset of C features, and sometimes it required a l
 It was a lot of work, and it made the `cfront` source code messy and challenging to follow.
 But it was a brilliant way to adapt C++ to any machine that had a C compiler.
 
-This was a big tape, 10.5" in diameter and had to be loaded on a tape reader like the ones you see in old movies.
-All we were doing is copying the files for building `cfront` onto our Sun system.
-Then we did something like `make cfront`.
+We were using Sun workstations, high-end machines at that time.
+The tape was 10.5" in diameter and had to be loaded on a tape reader like the ones you see in old movies.
+All we were doing is copying the files to build `cfront` onto our Sun system.
+We ran `make cfront`.
 There might have been bugs which we had to sort out via email (The University of Washington was on the Arpanet).
 But eventually there was an executable `cfront` that would take C++ code and emit C code that implemented the C++ program.
 
