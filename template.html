@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>$if(title)$$title$ — $endif$OOPology</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=$heading-font-google$&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+SC:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=$heading-font-google$&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Cormorant+SC:wght@400;600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  $if(highlighting-css)$
+  <style>
+  $highlighting-css$
+  </style>
+  $endif$
   <style>
     :root {
       --ink: #1a1612;
@@ -103,16 +108,16 @@
     strong { font-weight: 600; }
 
     code {
-      font-family: 'Courier New', monospace;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
       font-size: 0.82em;
-      background: rgba(0,0,0,0.06);
+      background: rgba(0,0,0,0.04);
       padding: 0.1em 0.35em;
       border-radius: 2px;
     }
 
     pre {
-      background: #1a1612;
-      color: #e8e0d0;
+      background: var(--paper);
+      border: 1px solid var(--rule);
       padding: 1.5rem;
       border-radius: 3px;
       overflow-x: auto;
@@ -126,6 +131,21 @@
       padding: 0;
       font-size: inherit;
       color: inherit;
+    }
+
+    /* Pandoc wraps highlighted blocks in div.sourceCode */
+    div.sourceCode {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      margin: 1.5rem 0;
+    }
+
+    div.sourceCode pre {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      margin: 0;
     }
 
     blockquote {

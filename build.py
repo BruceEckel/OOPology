@@ -99,11 +99,11 @@ def build_chapter(
         "--template", str(TEMPLATE),
         "--output", str(out),
         "--from", "markdown+smart",
-        "--syntax-highlighting", "tango",
+        "--syntax-highlighting", str(REPO_ROOT / "oopology.theme"),
         *vars,
     ]
     subprocess.run(cmd, check=True)
-    print(f"  {md_path.name} → {out.name}")
+    print(f"  {md_path.name} -> {out.name}")
 
 
 def build_index(chapters: list[Path]) -> None:
@@ -207,7 +207,7 @@ def main() -> None:
     print("Building index:")
     build_index(chapters)
     build_css()
-    print(f"\nDone. {len(chapters)} chapter(s) → docs/")
+    print(f"\nDone. {len(chapters)} chapter(s) -> docs/")
 
 
 if __name__ == "__main__":
