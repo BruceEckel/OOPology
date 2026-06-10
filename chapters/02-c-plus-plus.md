@@ -179,7 +179,7 @@ int main() {
 }
 ```
 
-When a structure is a simple as `Point` it is recommended to use `struct` rather than `class`.
+When a structure is as simple as `Point` it is recommended to use `struct` rather than `class`.
 Both keywords produce a scoped namespace for `Point`, with a constructor and a member function `print()`.
 
 All the initialization happens in the constructor initializer list.
@@ -191,3 +191,15 @@ You must still remember to call `delete` but it can call a destructor to perform
 
 Memory managment was a significant issue with operator overloading.
 Operator overloading seemed like a straightforward function definition except that the function name was an operator (indeed, in languages with automatic memory management that's how it works).
+
+In the end, C++ moved us *towards* high-level languages by wrapping the portable-assembly nature of C with some beneficial concepts.
+But C++ also had to be backwards compatible with C, so we could never fully escape the rawness of C.
+We had to juggle these new object-oriented concepts while still managing the low-level details.
+This turned out to be a lot to ask.
+
+I first heard the maxim "all computer science problems can be solved with another level of abstraction"
+from Andrew Koenig.
+It contains a certain tongue-in-cheek irony, suggesting that abstraction is the tool we reflexively grab.
+Sometimes the abstraction doesn't work out: it hides something important or produces questionable benefits.
+One group at Sun Microsystems decided that C++ was too confusing and difficult.
+They decided a new level of abstraction was needed, one that would solve the problems they saw in C++.

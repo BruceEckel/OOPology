@@ -2,12 +2,9 @@
 """Build OOPology: converts Markdown chapters to styled HTML."""
 
 import argparse
-import json
-import re
 import shutil
 import subprocess
 from pathlib import Path
-
 
 REPO_ROOT = Path(__file__).parent
 CHAPTERS_DIR = REPO_ROOT / "chapters"
@@ -32,7 +29,7 @@ def parse_frontmatter(md_path: Path) -> tuple[dict, str]:
             if ":" in line:
                 k, _, v = line.partition(":")
                 meta[k.strip()] = v.strip().strip('"')
-        body = text[end + 3:].strip()
+        body = text[end + 3 :].strip()
     else:
         body = text
     return meta, body
@@ -96,10 +93,14 @@ def build_chapter(
     cmd = [
         "pandoc",
         str(md_path),
-        "--template", str(TEMPLATE),
-        "--output", str(out),
-        "--from", "markdown+smart",
-        "--syntax-highlighting", str(REPO_ROOT / "oopology.theme"),
+        "--template",
+        str(TEMPLATE),
+        "--output",
+        str(out),
+        "--from",
+        "markdown+smart",
+        "--syntax-highlighting",
+        "pygments",
         *vars,
     ]
     subprocess.run(cmd, check=True)
@@ -114,8 +115,7 @@ def build_index(chapters: list[Path]) -> None:
         items.append((i, html_name(ch), title))
 
     toc_items = "\n".join(
-        f'    <li><span class="toc-num">{i:02d}</span>'
-        f'<a href="{url}">{title}</a></li>'
+        f'    <li><span class="toc-num">{i:02d}</span><a href="{url}">{title}</a></li>'
         for i, url, title in items
     )
 
@@ -184,7 +184,9 @@ body {{ background: var(--paper); color: var(--ink);
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build OOPology book site")
-    parser.add_argument("--clean", action="store_true", help="Remove docs/ before building")
+    parser.add_argument(
+        "--clean", action="store_true", help="Remove docs/ before building"
+    )
     args = parser.parse_args()
 
     if args.clean and DOCS_DIR.exists():
