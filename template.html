@@ -245,13 +245,11 @@
     <h1>$title$</h1>
     <div class="title-rule"></div>
     $body$
-    $if(prev-url)$
     <nav class="chapter-nav">
       $if(prev-url)$<a href="$prev-url$">← $prev-title$</a>$else$<span></span>$endif$
       <span class="spacer"></span>
       $if(next-url)$<a href="$next-url$">$next-title$ →</a>$endif$
     </nav>
-    $endif$
   </div>
 </body>
 </html>
