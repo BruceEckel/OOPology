@@ -11,7 +11,9 @@ CHAPTERS_DIR = REPO_ROOT / "chapters"
 DOCS_DIR = REPO_ROOT / "docs"
 TEMPLATE = REPO_ROOT / "template.html"
 
-BOOK_TITLE = "OOPology"
+BOOK_TITLE = "From Objects to Effects"
+BOOK_TITLE_HTML = "From Objects to&nbsp;Effects"
+BOOK_SUBTITLE = "A Modern History of Programming Languages"
 BOOK_AUTHOR = "Bruce Eckel"
 
 HEADING_FONT = "Lexend Deca"
@@ -70,6 +72,7 @@ def build_chapter(
     vars: list[str] = [
         f"--variable=title:{title}",
         f"--variable=chapter-label:{label}",
+        f"--variable=book-title:{BOOK_TITLE}",
         f"--variable=heading-font:{HEADING_FONT}",
         f"--variable=heading-font-google:{HEADING_FONT_GOOGLE}",
     ]
@@ -132,7 +135,8 @@ def build_index(chapters: list[Path]) -> None:
 <body>
   <div class="page">
     <p class="book-author">{BOOK_AUTHOR}</p>
-    <h1 class="book-title">{BOOK_TITLE}</h1>
+    <h1 class="book-title">{BOOK_TITLE_HTML}</h1>
+    <p class="book-subtitle">{BOOK_SUBTITLE}</p>
     <div class="title-rule"></div>
     <ul class="toc-list">
 {toc_items}
@@ -164,6 +168,8 @@ body {{ background: var(--paper); color: var(--ink);
   font-weight: 600; line-height: 1.1; margin-bottom: 0.5rem; }}
 .book-author {{ font-family: 'Cormorant SC', serif; font-size: 0.85rem;
   letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.5rem; }}
+.book-subtitle {{ font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 1.1rem; color: var(--muted); margin-bottom: 0.25rem; }}
 .title-rule {{ width: 3rem; height: 1px; background: var(--accent);
   margin: 1.5rem 0 2.5rem; }}
 .toc-list {{ list-style: none; margin-top: 2rem; }}

@@ -1,5 +1,5 @@
 ---
 title: "Python"
-label: "Chapter Seven"
+label: "Chapter Eight"
 published: true
 ---

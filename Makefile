@@ -8,7 +8,9 @@ help:
 	@echo "  serve   Serve existing docs/ without rebuilding"
 	@echo "  clean   Remove docs/ and rebuild from scratch"
 
-local: build serve
+local: build
+	python -c "import webbrowser; webbrowser.open('http://localhost:8000')"
+	python -m http.server --directory docs
 
 build:
 	python build.py

@@ -19,13 +19,13 @@ The tape contained the C source code for `cfront` which compiled C++ code into C
 
 This was years before the C standard was published.
 C, and the very concept of portable programs, was still catching on.
-Before C, you would write programs in the assembly language for the target machine.
+Before C, you wrote programs in the assembly language for the target machine.
 If another customer wanted your program on a different type of machine,
 you rewrote it in the assembly language for that machine.
-If the program was written in C you could hypothetically compile it with your machine's C compiler.
 
-C was often called "portable assembly language."
-It generated the assembly that you might write by hand, and it automated many common, tedious, and easily confused tasks.
+C is often called "portable assembly language."
+If a program was written in C you could hypothetically compile it with your machine's C compiler.
+It generated the assembly that you might write by hand, thus automating many common, tedious, and easily confused tasks.
 One of my early uses for C was to generate assembly for function definitions and calls,
 which I could then reproduce for a machine that didn't have a C compiler.
 
@@ -34,9 +34,9 @@ by people who understood that machine (typically the manufacturer).
 As there was no standard, these compilers often didn't behave the same.
 The compiler writers would guess at what the particular language features meant,
 and would sometimes not implement features they didn't agree with.
+
 In order for `cfront` to be useful,
 it had to compile on all the target machines *and* generate code that compiled on all the target machines.
-
 The `cfront` team had to adapt to the various C compilers.
 Sometimes this meant using a subset of C features, and sometimes it required a lot of `#IFDEF` preprocessing.
 This made the `cfront` source code messy and challenging to follow.
@@ -44,14 +44,15 @@ But it was a brilliant way to adapt C++ to any machine that had a C compiler.
 
 We were using Sun workstations, high-end machines in 1987.
 The tape was 10.5" in diameter and had to be loaded on a tape reader like the ones you see in old movies.
-All we were doing is copying the files to build `cfront` onto our Sun system.
+It contained the C source files to build `cfront`.
 We ran `make cfront`.
 There might have been bugs which we had to sort out via email (The University of Washington was on the Arpanet).
 But eventually there was an executable `cfront` that would take C++ code and emit C code that implemented the C++ program.
+The fact it emitted C code is important to this story.
 
 ## Learning C++ in the Stone Age
 
-To learn C++ I started creating example programs while going through the only book available,
+I started creating example programs while going through the only book available,
 Stroustrup's *The C++ Programming Language* (October 14, 1985, Addison-Wesley).
 Stroustrup said that he could either write an introduction,
 an expert's guide or a language reference.
@@ -77,6 +78,8 @@ These can seem needlessly complicated and even stupid to someone who isn't makin
 Today, backwards compatibility with C is no longer a benefit.
 The complexity of the features that enable C compatibility still impacts C++ programmers.
 
+## Memory Management
+
 C has no automatic memory management, which puts a burden on the programmer.
 To dynamically allocate memory, the programmer must call the library function `malloc()`,
 and then remember to call `free()` when that memory is no longer needed.
@@ -86,9 +89,8 @@ Some functions could be effortlessly called,
 and others required the programmer to know that they were responsible for memory management.
 For assembly programmers who had written their own memory management code,
 `malloc()` and `free()` were great timesavers.
-For programmers who hadn't started in assembly, they were confusing.
+For programmers who hadn't started in assembly, they were often confusing.
 
-C++ offered improved memory management using constructors, destructors, `new` and `delete`.
 In C, if you want to create an object-like entity,
 you allocate the storage, then call a function to initialize that storage.
 When you're done with that storage, you must release it by calling `free()`:
@@ -161,8 +163,13 @@ is longer that the destination storage.
 Because the source string may not be longer,
 it's possible that you (again) don't discover the problem until much later.
 
+C clearly requires a lot of fiddling and extra knowledge in order to write a correct program.
+But this was vastly better than programming in assembly,
+where you had no libraries to speak of -- the concept of a library was foreign to assembly programmers.
+
 ## C++ as "A Better C"
 
+C++ offers improved memory management using constructors, destructors, `new` and `delete`.
 Translating the example into C++ shows numerous benefits:
 
 ```cpp
@@ -170,7 +177,7 @@ Translating the example into C++ shows numerous benefits:
 #include <iostream>
 #include <string>
 
-struct Point {
+class Point {
     double x;
     double y;
     std::string label;
@@ -185,26 +192,27 @@ struct Point {
 };
 
 int main() {
-    // Heap allocated - must manage lifetime manually
+    // Heap objects must be destroyed manually:
     Point* p = new Point(3.14, 2.71, "Point p on heap");
     p->print();
     delete p;
 
-    // Stack allocated - destroyed automatically when main() exits
+    // Stack objects are automatically destroyed
+    // at the end of the scope:
     Point p2(2.71, 3.14, "Point p2 on stack");
     p2.print();
 }
 ```
 
-When a structure is as simple as `Point` it is recommended to use `struct` rather than `class`.
-Both keywords produce a scoped namespace for `Point`, with a constructor and a member function `print()`.
-
-All the initialization happens in the constructor initializer list.
-`std::move` ensures proper initialization of `label` without worrying about potentially losing the string terminator.
-`print()` is a function that is explicitly attached to `Point`.
+The `class` keyword produces a scoped namespace for `Point`, with a constructor and a member function `print()`.
+(In an example as simple as this, `struct` would also have achieved the same result).
 
 The `new` keyword both allocates storage and calls the constructor for `Point`.
-You must still remember to call `delete` but it can call a destructor to perform cleanup before it releases the storage.
+You must still remember to call `delete`, which can also call a destructor to perform cleanup before it releases the storage.
+
+All the `Point` initialization happens in the constructor initializer list.
+`std::move` ensures proper initialization of `label` without worrying about potentially losing the string terminator.
+`print()` is a function that is explicitly attached to `Point`.
 
 Note that with stack-based objects you don't call `new` and `delete` because these objects have statically-determined lifetimes.
 The compiler allocates storage and calls `new` and `delete` for you.

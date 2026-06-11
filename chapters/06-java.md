@@ -1,6 +1,6 @@
 ---
 title: "Java"
-label: "Chapter Three"
+label: "Chapter Six"
 published: true
 ---
 

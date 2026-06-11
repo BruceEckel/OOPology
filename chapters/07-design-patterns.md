@@ -1,5 +1,5 @@
 ---
 title: "Design Patterns"
-label: "Chapter Four"
+label: "Chapter Seven"
 published: true
 ---
