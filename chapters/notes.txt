@@ -4,3 +4,5 @@
 It's all about efficiency, but there are different kinds:
     - Efficiency of creation
     - Efficiency of execution
+
+The appearance of deep inheritance hierarchies

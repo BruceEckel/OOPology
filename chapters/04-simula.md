@@ -60,7 +60,7 @@ This was decades before most of the industry noticed.
 It is worth seeing exactly how the simulation goal produced the features we now treat as universal.
 
 **Objects are autonomous actors.**
-In a simulation, each entity is a little independent agent.
+In a simulation, each entity is an independent agent.
 It owns its state.
 It owns the procedures that act on that state.
 The outside world is not supposed to reach in and meddle.
@@ -106,7 +106,7 @@ It could be an active process with a life of its own.
 The OO languages that followed mostly dropped this.
 They kept the class-and-inheritance half of Simula and threw away the active-process half.
 We have spent the decades since reinventing it under other names: threads, generators, async/await.
-We forgot that the first object was already a little autonomous process.
+We forgot that the first object was an autonomous process.
 The first objects were simulated actors that all ran at once.
 
 ## Original OOP Was Statically Typed
@@ -130,14 +130,12 @@ Static typing and simulation are made for each other.
 Both assume a universe whose categories are settled before the action starts.
 
 The effect of that choice was enormous.
-It is the reason the two halves of this book exist.
 Static typing welds an object to a contract fixed at compile time.
 Through a `Ship` reference you may send only the messages `Ship` declares.
 No more, no matter what the object underneath really is.
 So inheritance under static typing becomes a promise.
 To be a subclass is to honor the base class's interface everywhere the base class is expected.
-That is the seed of the Liskov Substitution Principle (LSP).
-It is the seed of the rigidity of inheritance.
+This is the seed of the Liskov Substitution Principle (LSP) and the rigidity of inheritance.
 It is the seed of the argument about whether a `Square` is a type of `Rectangle`.
 None of those constraints are inherent to "objects."
 They come from one decision: to know all the types in advance.
@@ -147,39 +145,33 @@ That decision was natural for a simulation language.
 
 Bjarne Stroustrup used Simula for his doctoral work at Cambridge.
 He was simulating distributed systems.
-He loved what its classes did for the structure of his programs.
-He hated what they did for their speed.
-Simula was too slow for the scale he needed.
-So he grafted Simula's class concept onto C.
-C had no overhead and an aggressively static, compile-it-down-to-the-metal philosophy.
+Classes improved the structure of his programs, but Simula was too slow for the scale he needed.
+So he grafted Simula's class concept onto C, the most efficient language at the time.
 "C with Classes" became C++.
 Stroustrup kept Simula's static typing and made it sharper.
-Classes, inheritance, and virtual functions were all checked at compile time.
-They were all compiled away to nothing at runtime.
+Classes, inheritance, and virtual functions were checked at compile time, then compiled away at runtime.
 The static, taxonomy-shaped OOP of Simula flowed almost directly into C++.
 From C++ it flowed into Java.
-From there it flowed into the mainstream's whole idea of what an object is.
+From there it flowed into the mainstream idea of an object.
 
-Alan Kay went the other way.
-He encountered Simula early and puzzled over a listing of it.
-He had the opposite epiphany.
+Before that, Alan Kay went the other way.
+He encountered Simula and had the opposite epiphany.
 Stroustrup saw a structuring tool to be made efficient.
 Kay saw biology.
 He saw objects as independent cells that communicate only by messages.
 No fixed contract said what a cell could be asked.
-Smalltalk kept Simula's objects and threw away its static types.
-The compile-time class contract gave way to runtime message passing and extreme late binding.
-The next chapter on Smalltalk is full of this: duck typing, `doesNotUnderstand:`, growing an object's interface at runtime.
+
+While C++ kept Simula's static, classified, closed world and made it fast,
+Smalltalk kept Simula's autonomous objects and threw away its static types, making the world open.
+Simula's compile-time class contract gave way to runtime message passing and extreme late binding.
 All of it is Kay discarding the closed world assumption of simulation.
 
-C++ kept Simula's static, classified, closed world and made it fast.
-Smalltalk kept Simula's autonomous objects and made the world open.
 Nearly every argument in OOP involves which half of Simula a language chose to keep.
 
 ## What Doesn't Fit Inside a Simulation
 
 Simula's machinery models a world of classified, interacting, identity-bearing entities.
-We took that machinery and declared it the way to structure all software.
+OOP ideology takes that machinery and declares it the way to structure all software.
 But most programs are not simulations of such a world.
 And the parts that aren't fight the mold.
 
@@ -196,7 +188,7 @@ Consider the things with no comfortable place in the simulation picture.
 
 - **Computation and transformation.**
   A great deal of programming turns input into output.
-  Think of parsing, compiling, rendering, aggregating, mapping a function over a stream.
+  Think of parsing, compiling, rendering, aggregating, and mapping a function over a stream.
   These are processes, not populations.
   There is no taxonomy of interacting entities to discover.
   Forcing one, like a `ParserManager` owning a `TokenStrategy`, adds ceremony without meaning.
