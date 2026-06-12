@@ -13,7 +13,7 @@ TEMPLATE = REPO_ROOT / "template.html"
 
 BOOK_TITLE = "From Objects to Effects"
 BOOK_TITLE_HTML = "From Objects to&nbsp;Effects"
-BOOK_SUBTITLE = "A Modern History of Programming Languages"
+BOOK_SUBTITLE = "A History of Modern Programming"
 BOOK_AUTHOR = "Bruce Eckel"
 
 HEADING_FONT = "Lexend Deca"
