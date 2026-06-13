@@ -152,12 +152,10 @@ Stroustrup kept Simula's static typing and made it sharper.
 Classes, inheritance, and virtual functions were checked at compile time, then compiled away at runtime.
 The static, taxonomy-shaped OOP of Simula flowed almost directly into C++.
 From C++ it flowed into Java.
-From there it flowed into the mainstream idea of an object.
+From there it became the mainstream idea of an object.
 
-Before that, Alan Kay went the other way.
-He encountered Simula and had the opposite epiphany.
-Stroustrup saw a structuring tool to be made efficient.
-Kay saw biology.
+Before that, Alan Kay encountered Simula and had the opposite epiphany.
+Not a structuring tool to be made efficient, but biology.
 He saw objects as independent cells that communicate only by messages.
 No fixed contract said what a cell could be asked.
 

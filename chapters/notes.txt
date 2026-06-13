@@ -6,3 +6,6 @@ It's all about efficiency, but there are different kinds:
     - Efficiency of execution
 
 The appearance of deep inheritance hierarchies
+
+Should I talk about test-driven development?
+What about Agile?
