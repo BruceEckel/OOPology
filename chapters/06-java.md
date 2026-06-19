@@ -4,6 +4,8 @@ label: "Chapter Six"
 published: true
 ---
 
+> Java aspired to be Smalltalk but instead created Simula.
+
 The Java language popularized two fundamental technologies:
 
 1. **Automatic Memory Management**.
